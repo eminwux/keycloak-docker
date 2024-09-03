@@ -41,7 +41,6 @@ if [ ! -f /mnt/keycloak/server.keystore ]; then
 
     delete_file /mnt/keycloak/server.keystore 
     delete_file /mnt/keycloak/server.crt 
-    delete_file /opt/keycloak/conf/server.keystore
 
     # Generate key pair for server
     echo_green "Generating key pair..."
@@ -66,11 +65,12 @@ if [ ! -f /mnt/keycloak/server.keystore ]; then
 fi
 
 # Link server.keystore to the Keycloak configuration directory
+delete_file /opt/keycloak/conf/server.keystore
 echo_green "Linking keystore..."
 ln -s `pwd`/server.keystore /opt/keycloak/conf/
 ok_or_exit
 
 # Start Keycloak with development settings and log level info
 echo_green "Starting Keycloak..."
-/opt/keycloak/bin/kc.sh start-dev --log-level=info
+/opt/keycloak/bin/kc.sh start-dev --log-level=debug
 ok_or_exit
