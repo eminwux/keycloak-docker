@@ -49,11 +49,6 @@ if [ ! -f /mnt/keycloak/server.keystore ]; then
 
     ok_or_exit
 
-    # Link server.keystore to the Keycloak configuration directory
-    echo_green "Linking keystore..."
-    ln -s `pwd`/server.keystore /opt/keycloak/conf/
-    ok_or_exit
-
     # Export the public certificate from keystore
     echo_green "Exporting certificate..."
     keytool -exportcert -alias server -file server.crt -keystore server.keystore -storepass password -rfc
@@ -69,6 +64,11 @@ if [ ! -f /mnt/keycloak/server.keystore ]; then
     ok_or_exit
 
 fi
+
+# Link server.keystore to the Keycloak configuration directory
+echo_green "Linking keystore..."
+ln -s `pwd`/server.keystore /opt/keycloak/conf/
+ok_or_exit
 
 # Start Keycloak with development settings and log level info
 echo_green "Starting Keycloak..."
